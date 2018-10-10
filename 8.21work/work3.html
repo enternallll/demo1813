@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+	</head>
+	<body>
+		<script type="text/javascript">
+//			var num=parseInt(prompt("请输入三位数数字"));
+//			var temp=Boolean(num==(Math.pow(num/100,3)+Math.pow(num/10%10,3)+Math.pow(num%10,3)));
+//			var res;
+//			switch(temp){
+//				case true:res="是";break;
+//				case false:res="不是";
+//			}
+//			
+//			alert(res);
+	var n=parseInt(prompt("请输入三位数以内数字"));
+    var i=parseInt(n/100);
+    var j=parseInt(n/10%10);
+    var k=parseInt(n%10);
+    var temp=Boolean(Math.pow(i,3)+Math.pow(j,3)+Math.pow(k,3)==n);
+    switch(temp){
+				case true:res="是水仙花数";break;
+				case false:res="不是水仙花数";
+			}
+    alert(res);
+
+
+		</script>
+	</body>
+</html>
