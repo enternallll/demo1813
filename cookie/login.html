@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<title></title>
+	</head>
+	<body>
+			<p>请输入用户名： <input type="text" name="txt" id="uname" value="" /></p>
+			<p>请输入密码： <input type="password" name="upwd" id="upwd" value="" /></p>
+			<p> <input type="button" name="submit" id="submit" value="登录" />
+			<input type="button" name="" id="go" value="没有账号,去注册" /></p>
+			<script src="js/cookie.js"></script>
+			<script type="text/javascript">
+				var oTxt = document.getElementById("uname");
+				var oPass = document.getElementById("upwd");
+				var oSub = document.getElementById("submit");
+				var oGo = document.getElementById("go");
+				oSub.onclick = function(){
+					var uname = oTxt.value;
+					var pwd = oPass.value;
+					if(!uname){
+						alert("用户名不能为空！");
+						return ;
+					}
+					//获取cookie
+					var cookieStr = getCookie('registors') ? getCookie('registors') : "";
+					var cookieObj = convertCookieStrToCookieObj(cookieStr);
+					if(uname in cookieObj){
+						if(cookieObj[uname] == pwd){
+							alert("登录成功！");
+							location.href = 'index.html';
+						}else{
+							alert("请确认您的密码是否正确！");
+						}
+					}else{
+						alert("用户名不存在，去注册吧！");
+					}
+					
+				}
+				oGo.onclick = function(){
+					location.href = "registor.html";
+				}
+				//test:123,aa:123
+				
+				function convertCookieStrToCookieObj(cookieStr){
+					if(!cookieStr){
+						return {};
+					}
+					var obj = {};
+					var arr = cookieStr.split(','); 
+					for(var i = 0,len = arr.length;i < len ;i ++){
+						var list = arr[i].split(':');
+						obj[list[0]] = list[1];
+					}
+					return obj;
+				}
+				function convertCookieObjToCookieStr(cookieObj){
+					var str = "";
+					for(var i in cookieObj){
+						var pass = cookieObj[i];
+						if(str){
+							str += ',';
+						}
+						str += i + ":" + pass;
+					}
+					return str;
+				}
+			</script>
+	</body>
+</html>

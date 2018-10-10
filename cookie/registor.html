@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<title></title>
+	</head>
+	<body>
+		<p>请输入用户名： <input type="text" name="txt" id="uname" value="" /></p>
+		<p>请输入密码： <input type="password" name="upwd" id="upwd" value="" /></p>
+		<p>请确认密码： <input type="password" name="verify" id="verify" value="" /></p>
+		<p> <input type="button" name="submit" id="submit" value="注册" /><input type="button" name="" id="go" value="去登录" /></p>
+		<script src="js/cookie.js"></script>
+		<script type="text/javascript">
+			/*
+				思路 ：
+				1.获取页面元素
+				2.给注册按键添加点击事件
+				3.获取用户名，密码，确认密码
+				4.判断用户名是否为空
+				5.判断密码和确认密码是否一致
+				6.获取现有的cookie消息
+				7.将cookie字符串转为cookie对象
+				8.使用in判断当前用户名是否存在
+				9.如何不存在，将当前用户名和密码加入对象
+				10.将对象转为字符串
+				11.重新创建cookie
+			*/
+		   //获取页面元素
+			var oTxt = document.getElementById("uname");
+			var oPass = document.getElementById("upwd");
+			var oVer = document.getElementById("verify");
+			var oSub = document.getElementById("submit");
+			var oGo = document.getElementById("go");
+			//添加事件
+			oSub.onclick = function(){
+				//获取用户名,密码,确认密码
+				var uname = oTxt.value;
+				var pwd = oPass.value;
+				var verify = oVer.value;
+				//判断用户名是否为空
+				if(!uname){
+					alert("用户名不能为空！");
+					return;
+				}
+				//判断密码是否一致
+				if(pwd != verify){
+					alert("两次密码不一致！");
+					return;
+				}
+				/*
+					'张三:123,李四:456'
+				*/
+			   //获取现有cookie
+			   var cookieStr = getCookie('registors') ? getCookie('registors') : "";
+			   //转为对象
+			   var cookieObj = convertCookieStrToCookieObj(cookieStr);
+			   //in : 判断key是否属于某个对象,如果属于,返回true,否则 ,返回false
+			   //判断当前用户名是否存在 
+			   if(uname in cookieObj){
+				   alert("用户名已存在！");
+				   return;
+			   }else{
+				   //添加到对象中
+				   cookieObj[uname] = pwd;
+			   }
+			  //转加字符串
+			   cookieStr = convertCookieObjToCookieStr(cookieObj);
+			   //创建cookie
+			  $cookie('registors',cookieStr,7);
+					
+			   
+			}
+			//跳转到登录页
+			oGo.onclick = function(){
+				location.href = "login.html";
+			}
+			//将cookie字符串转为cookie对象
+			function convertCookieStrToCookieObj(cookieStr){
+				if(!cookieStr){
+					return {};
+				}
+				var obj = {};
+				var arr = cookieStr.split(',');
+				
+					
+				for(var i = 0,len = arr.length;i < len;i ++){
+					var list = arr[i].split(':');
+					obj[list[0]] = list[1];
+				}
+				
+				
+				console.log(obj);
+				return obj;
+			}
+			//将cookie对象转为字符串
+			function convertCookieObjToCookieStr(cookieObj){
+				/*
+					{
+						"用户1" : "密码1"，
+						"用户2" ： "密码2"
+					}
+				*/
+			   var str = '';
+			  
+			   for(var i in cookieObj){
+				   var pwd = cookieObj[i];
+				   if(str){
+					   str += ',';
+				   }
+				   str += i + ":" + pwd;
+			   }
+			   return str;
+			}
+		</script>
+	</body>
+</html>
